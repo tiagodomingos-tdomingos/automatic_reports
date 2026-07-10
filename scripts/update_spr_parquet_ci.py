@@ -12,7 +12,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 
 # ── CONFIG ────────────────────────────────────────────────────────────────────
-BQ_PROJECT   = "meli-bi-data"
+BQ_PROJECT   = "bidata-cross-sa-batch"  # SA's project — has job creation permission
 GRID_DOC_ID  = "01KWZ4C3XED67DE0RRZ6TNAY2X"
 DATASET_NAME = "spr_parquet"
 GRID_API     = "https://grid.melioffice.com/api/v1"
