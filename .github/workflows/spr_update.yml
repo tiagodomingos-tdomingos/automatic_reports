@@ -19,7 +19,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install requests pandas pyarrow PyJWT cryptography
+        run: pip install requests pandas pyarrow google-auth
 
       - name: Run update script
         env:
