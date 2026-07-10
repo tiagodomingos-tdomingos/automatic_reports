@@ -53,12 +53,12 @@ WHERE 1=1
 def get_bq_token():
     from google.oauth2 import service_account
     import google.auth.transport.requests, base64
-    raw = os.environ["GCP_SA_KEY"]
+    raw = os.environ["GCP_SA_KEY"].strip().lstrip('﻿').lstrip('\xef\xbb\xbf')
     # Support both plain JSON and base64-encoded JSON
     try:
         sa_info = json.loads(raw)
     except Exception:
-        sa_info = json.loads(base64.b64decode(raw).decode("utf-8"))
+        sa_info = json.loads(base64.b64decode(raw).decode("utf-8-sig"))
     credentials = service_account.Credentials.from_service_account_info(
         sa_info,
         scopes=["https://www.googleapis.com/auth/bigquery"]
