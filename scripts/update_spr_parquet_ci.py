@@ -51,23 +51,15 @@ WHERE 1=1
 
 # ── BQ AUTH via Service Account ───────────────────────────────────────────────
 def get_bq_token():
-    sa = json.loads(os.environ["GCP_SA_KEY"])
-    import jwt, time as t
-    now = int(t.time())
-    payload = {
-        "iss": sa["client_email"],
-        "scope": "https://www.googleapis.com/auth/bigquery",
-        "aud": "https://oauth2.googleapis.com/token",
-        "iat": now,
-        "exp": now + 3600,
-    }
-    signed = jwt.encode(payload, sa["private_key"], algorithm="RS256")
-    r = requests.post("https://oauth2.googleapis.com/token", data={
-        "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
-        "assertion": signed,
-    })
-    r.raise_for_status()
-    return r.json()["access_token"]
+    from google.oauth2 import service_account
+    import google.auth.transport.requests
+    sa_info = json.loads(os.environ["GCP_SA_KEY"])
+    credentials = service_account.Credentials.from_service_account_info(
+        sa_info,
+        scopes=["https://www.googleapis.com/auth/bigquery"]
+    )
+    credentials.refresh(google.auth.transport.requests.Request())
+    return credentials.token
 
 
 # ── BQ QUERY ──────────────────────────────────────────────────────────────────
