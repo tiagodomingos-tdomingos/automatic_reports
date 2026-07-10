@@ -60,6 +60,8 @@ def get_bq_token():
         sa_info = json.loads(raw)
     except Exception:
         sa_info = json.loads(_b64.b64decode(raw))
+    print(f"  SA email: {sa_info.get('client_email')}")
+    print(f"  Key ID:   {sa_info.get('private_key_id')}")
     credentials = service_account.Credentials.from_service_account_info(
         sa_info,
         scopes=["https://www.googleapis.com/auth/bigquery"]
